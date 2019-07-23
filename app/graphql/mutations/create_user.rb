@@ -11,7 +11,6 @@ module Mutations
     argument :auth_provider, AuthProviderSignupData, required: false
   
     type Types::UserType
-
     def resolve(auth_provider: nil)
       
       User.create!(
