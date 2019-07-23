@@ -11,8 +11,9 @@ module Mutations
     argument :auth_provider, AuthProviderSignupData, required: false
   
     type Types::UserType
+
     def resolve(auth_provider: nil)
-      
+      #sdsd
       User.create!(
         email: auth_provider&.[](:email)&.[](:email),
         password: auth_provider&.[](:email)&.[](:password)
