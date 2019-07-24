@@ -1,3 +1,4 @@
+# graphql controller
 class GraphqlController < ApplicationController
   def execute
     variables = ensure_hash(params[:variables])
@@ -35,10 +36,10 @@ class GraphqlController < ApplicationController
       end
     end
 
-    def handle_error_in_development(e)
+    def handle_error_in_development(arg)
       logger.error e.message
       logger.error e.backtrace.join("\n")
 
-      render json: { error: { message: e.message, backtrace: e.backtrace }, data: {} }, status: 500
+      render json: { error: { message: arg.message, backtrace: arg.backtrace }, data: {} }, status: 500
     end
 end
