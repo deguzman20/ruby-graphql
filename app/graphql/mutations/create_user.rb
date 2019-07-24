@@ -9,11 +9,11 @@ module Mutations
   
     # argument :name, String, required: true
     argument :auth_provider, AuthProviderSignupData, required: false
-  
+    argument :user_type, Types::UserEnum, required: false
+    
     type Types::UserType
-
-    def resolve(auth_provider: nil)
-      #sdsd
+   
+    def resolve(auth_provider: nil, user_type: nil)
       User.create!(
         email: auth_provider&.[](:email)&.[](:email),
         password: auth_provider&.[](:email)&.[](:password)
