@@ -1,0 +1,12 @@
+#!/bin/bash
+echo -e "[RSPEC] --> init (wait a second)"
+
+FAILS=`bundle exec rspec --format progress | grep -E '(\d*) failure(s?)' -o | awk '{print $1}'`
+
+if [ $FAILS -ne 0 ]; then
+  echo -e "[RSPEC] --> ✋  Can't commit! You have broken tests!!!"
+  exit 1
+else
+  echo -e "[RSPEC] --> 👍 Commit approved."
+  exit 0
+fi

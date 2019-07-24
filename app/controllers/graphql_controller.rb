@@ -6,7 +6,7 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      # current_user: current_users,
+      # current_user: current_user,
     }
     result = GraphqlTurorialSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -36,10 +36,10 @@ class GraphqlController < ApplicationController
       end
     end
 
-    def handle_error_in_development(arg)
+    def handle_error_in_development(e)
       logger.error e.message
       logger.error e.backtrace.join("\n")
 
-      render json: { error: { message: arg.message, backtrace: arg.backtrace }, data: {} }, status: 500
+      render json: { error: { message: e.message, backtrace: e.backtrace }, data: {} }, status: 500
     end
 end

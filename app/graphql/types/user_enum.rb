@@ -1,6 +1,6 @@
 module Types
 	# user category
-	class Types::UserCategory < Types::BaseEnum
+	class Types::UserEnum < Types::BaseEnum
 	  value "USER", "USER"
 	  value "ADMIN", "ADMIN"
 	end

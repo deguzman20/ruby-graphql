@@ -2,7 +2,7 @@ module Mutations
   # mutation for creating new user
   class CreateUser < BaseMutation
     description "Create User"
-     # base input object for email and password
+    # base input object for email and password
     class AuthProviderSignupData < Types::BaseInputObject
       argument :email, Types::AuthProviderEmailInput, required: false
     end

@@ -1,0 +1,14 @@
+#!/bin/sh
+HOOKS="pre-commit-prevent-master pre-commit-prevent-develop pre-commit-rubocop pre-commit-rspec"
+
+for hook in $HOOKS; do
+  if [ -f "$PWD/.git/hooks/$hook" ]; then
+    "$PWD/.git/hooks/$hook"
+    if [ $? != 0 ]; then
+      exit 1
+    fi
+  else
+    echo "Error: file $hook not found."
+    exit 1
+  fi
+done
