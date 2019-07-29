@@ -1,23 +1,22 @@
 # graphql controller
 class GraphqlController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]
-    operation_name = params[:operationName]
-    context = {
-      # Query context goes here, for example:
-      # current_user: current_users,
-    }
-    result = GraphqlTurorialSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = GraphqlTurorialSchema.execute(
+              query,
+              variables: variables,
+              context: generate_context
+             )
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
-
     handle_error_in_development e
   end
 
   private
-
     # Handle form data, JSON body, or a blank value
     def ensure_hash(ambiguous_param)
       case ambiguous_param
@@ -41,5 +40,15 @@ class GraphqlController < ApplicationController
       logger.error e.backtrace.join("\n")
 
       render json: { error: { message: e.message, backtrace: e.backtrace }, data: {} }, status: 500
+    end
+
+    def generate_context
+      context = { current_user: set_current_user,
+                  token: request.headers[:authorization] }
+    end
+
+    def set_current_user
+      token = request.headers['Authorization']
+      AuthorizeApiRequest.call(request.headers).result if token.present?
     end
 end
