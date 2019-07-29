@@ -2,18 +2,22 @@ module Mutations
   # mutation for creating link
   class CreateLink < BaseMutation
     description "Create Link"
-    # arguments passed to the `resolved` method
     argument :url, String, required: true
     argument :description, String, required: true
 
-    # return type from the mutation
-    type Types::LinkType
+    field :response, String, null: true
+    field :status_code, Integer, null: false
 
     def resolve(url: nil, description: nil)
-      Link.create!(
-        description: description,
-        url: url
-      )
+      if context[:current_user].nil?
+        { response: "Unauthorized", status_code: 401 }
+      else
+        Link.create!(
+          description: description,
+          url: url
+        )
+        { response: 'sasas', status_code: 200 }
+      end
     end
   end
 end
